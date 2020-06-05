@@ -1,0 +1,10 @@
+# github.com/go-sql-driver/mysql v1.5.0
+## explicit
+github.com/go-sql-driver/mysql
+# github.com/mattn/go-runewidth v0.0.9
+github.com/mattn/go-runewidth
+# github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db
+github.com/mitchellh/colorstring
+# github.com/schollz/progressbar/v3 v3.3.3
+## explicit
+github.com/schollz/progressbar/v3
