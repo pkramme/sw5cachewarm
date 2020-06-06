@@ -2,6 +2,9 @@
 SW5CacheWarm is a small application designed to accelerate cache warming for Shopware 5 shop systems.
 It is built as an alternative to `bin/console sw:warm:http:cache --product`.  
 
+In my tests, it needed 5 minutes for warming 10000 articles, while `bin/console sw:warm:http:cache --product` needed 9
+minutes.
+
 Note that it only uses the URLs from the `s_core_rewrite_urls` table.
 ## Usage
 ### Options
