@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"sync"
+	"time"
 )
 
 func main() {
@@ -17,6 +18,7 @@ func main() {
 	dbaddr := flag.String("dbaddr", "", "Shopware Database Host")
 	parallel := flag.Int("parallel", 4, "Number of articles to warm at once")
 	basepath := flag.String("basepath", "", "Shop Basepath")
+	ratelimit := flag.Bool("ratelimit", true, "Reduces the rate when 503 Service Unavailable is returned by the server")
 
 	flag.Parse()
 
@@ -45,8 +47,21 @@ func main() {
 	for i := 0; i < *parallel; i++ {
 		wg.Add(1)
 		go func() {
+			var delay time.Duration
 			for url := range queue {
-				http.Get(*basepath + url)
+				resp, err := http.Get(*basepath + url)
+				if err != nil {
+					log.Println(err)
+					continue
+				}
+				if *ratelimit {
+					if resp.StatusCode == http.StatusServiceUnavailable {
+						log.Println("Server returned 503, adding 10ms delay. Delay is now", delay.Round(time.Millisecond).String())
+						delay += 10 * time.Millisecond
+					}
+					time.Sleep(delay)
+				}
+
 			}
 			wg.Done()
 		}()
