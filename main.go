@@ -56,8 +56,8 @@ func main() {
 				}
 				if *ratelimit {
 					if resp.StatusCode == http.StatusServiceUnavailable {
-						log.Println("Server returned 503, adding 10ms delay. Delay is now", delay.Round(time.Millisecond).String())
 						delay += 10 * time.Millisecond
+						log.Println("Server returned 503, adding 10ms delay. Delay is now", delay.Round(time.Millisecond).String())
 					}
 					time.Sleep(delay)
 				}
