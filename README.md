@@ -19,8 +19,10 @@ Note that it only uses the URLs from the `s_core_rewrite_urls` table.
         Shopware Database Password
   -dbuser string
         Shopware Database User
-  -queuedepth int
-        Queue depth (default 100)
+  -parallel int
+        Number of articles to warm at once (default 4)
+  -ratelimit
+        Reduces the rate when 503 Service Unavailable is returned by the server (default true)
 ```
 ### Example
 ```text
