@@ -15,7 +15,7 @@ func main() {
 	dbpass := flag.String("dbpass", "", "Shopware Database Password")
 	dbname := flag.String("dbname", "", "Shopware Database Name")
 	dbaddr := flag.String("dbaddr", "", "Shopware Database Host")
-	queuedepth := flag.Int("queuedepth", 100, "Queue depth")
+	parallel := flag.Int("parallel", 4, "Number of articles to warm at once")
 	basepath := flag.String("basepath", "", "Shop Basepath")
 
 	flag.Parse()
@@ -38,11 +38,11 @@ func main() {
 	log.Println("Successfully connected to database...")
 	log.Println("Gathering SEO URLs...")
 
-	queue := make(chan string, *queuedepth)
+	queue := make(chan string, 100)
 
 	var wg sync.WaitGroup
 
-	for i := 0; i < *queuedepth; i++ {
+	for i := 0; i < *parallel; i++ {
 		wg.Add(1)
 		go func() {
 			for url := range queue {
