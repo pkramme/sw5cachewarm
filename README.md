@@ -23,6 +23,8 @@ Note that it only uses the URLs from the `s_core_rewrite_urls` table.
         Number of articles to warm at once (default 4)
   -ratelimit
         Reduces the rate when 503 Service Unavailable is returned by the server (default true)
+  -subshopid int
+        Subshop ID (default 1)
 ```
 ### Example
 ```text
