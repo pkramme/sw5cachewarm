@@ -6,6 +6,18 @@ In my tests, it needed 5 minutes for warming 10000 articles, while `bin/console 
 minutes.
 
 Note that it only uses the URLs from the `s_core_rewrite_urls` table.
+## Installation
+You need to have the [Go compiler](https://golang.org/doc/install) installed. If you do not have root
+access, you can extract the compiler to `/home/youruser/go1.14` and add `/home/youruser/go1.14/go/bin` to your PATH.
+
+After ensuring the compiler works, simply execute 
+```
+go get github.com/pkramme/sw5cachewarm
+```
+
+The binary is now under `/home/youruser/go/bin/`.
+
+You can also compile on another computer and then upload the resulting binary to the desired location.
 ## Usage
 ### Options
 ```text
