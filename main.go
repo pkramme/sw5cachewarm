@@ -33,6 +33,11 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	db.SetConnMaxLifetime(time.Minute * 3)
+	db.SetMaxOpenConns(2)
+	db.SetMaxIdleConns(4)
+
 	err = db.Ping()
 	if err != nil {
 		log.Fatalln(err)
