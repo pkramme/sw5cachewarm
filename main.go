@@ -73,13 +73,7 @@ func main() {
 		}()
 	}
 
-	var numberofurls int
-	err = db.QueryRow("SELECT COUNT(path) FROM s_core_rewrite_urls WHERE main = 1 AND subshopID = ?", *subshopid).Scan(&numberofurls)
-	if err != nil {
-		log.Println(err)
-	}
-
-	bar := progressbar.Default(int64(numberofurls))
+	var urls []string
 
 	rows, err := db.Query("SELECT path FROM s_core_rewrite_urls WHERE main = 1 AND subshopID = ?", *subshopid)
 	if err != nil && err != sql.ErrNoRows {
@@ -93,9 +87,18 @@ func main() {
 			log.Fatalln(err)
 
 		}
-		bar.Add(1)
-		queue <- path
+		urls = append(urls, path)
 	}
+
+	db.Close()
+
+	bar := progressbar.Default(int64(len(urls)))
+
+	for _, u := range urls {
+		bar.Add(1)
+		queue <- u
+	}
+
 	close(queue)
 	wg.Wait()
 }
