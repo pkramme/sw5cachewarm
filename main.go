@@ -20,6 +20,8 @@ func main() {
 	basepath := flag.String("basepath", "", "Shop Basepath")
 	ratelimit := flag.Bool("ratelimit", true, "Reduces the rate when 503 Service Unavailable is returned by the server")
 	subshopid := flag.Int("subshopid", 1, "Subshop ID")
+	orgpathfilter := flag.String("orgpathfilter", "%", "org_path column filter. Use to narrow down warming items.")
+	pathfilter := flag.String("pathfilter", "%", "path column filter. Use to narrow down warming items.")
 
 	flag.Parse()
 
@@ -75,7 +77,7 @@ func main() {
 
 	var urls []string
 
-	rows, err := db.Query("SELECT path FROM s_core_rewrite_urls WHERE main = 1 AND subshopID = ?", *subshopid)
+	rows, err := db.Query("SELECT path FROM s_core_rewrite_urls WHERE main = 1 AND subshopID = ? AND org_path LIKE ? AND path LIKE ?", *subshopid, *orgpathfilter, *pathfilter)
 	if err != nil && err != sql.ErrNoRows {
 		log.Fatalln(err)
 	}
