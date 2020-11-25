@@ -20,6 +20,7 @@ func main() {
 	basepath := flag.String("basepath", "", "Shop Basepath")
 	ratelimit := flag.Bool("ratelimit", true, "Reduces the rate when 503 Service Unavailable is returned by the server")
 	subshopid := flag.Int("subshopid", 1, "Subshop ID")
+	item := flag.String("item", "%sViewport=cat%", "Special Items WarmUp")
 
 	flag.Parse()
 
@@ -74,14 +75,14 @@ func main() {
 	}
 
 	var numberofurls int
-	err = db.QueryRow("SELECT COUNT(path) FROM s_core_rewrite_urls WHERE main = 1 AND subshopID = ?", *subshopid).Scan(&numberofurls)
+	err = db.QueryRow("SELECT COUNT(path) FROM s_core_rewrite_urls WHERE main = 1 AND org_path like ? AND subshopID = ?", *subshopid).Scan(&numberofurls)
 	if err != nil {
 		log.Println(err)
 	}
 
 	bar := progressbar.Default(int64(numberofurls))
 
-	rows, err := db.Query("SELECT path FROM s_core_rewrite_urls WHERE main = 1 AND subshopID = ?", *subshopid)
+	rows, err := db.Query("SELECT path FROM s_core_rewrite_urls WHERE main = 1 AND org_path like ? AND subshopID = ?", *subshopid)
 	if err != nil && err != sql.ErrNoRows {
 		log.Fatalln(err)
 	}
